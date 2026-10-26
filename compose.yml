@@ -49,12 +49,13 @@ services:
     volumes:
       - ./planlos-web/settings.yml:/usr/share/nginx/html/settings.yml:ro
 
-  docs:
-    image: localhost/planlos-docs:latest
-    build: ./planlos-docs
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:${DOCS_PORT:-8001}:80"
+  # Optional, uncomment (and planlos-docs in repos.sh) to include
+  # docs:
+  #   image: localhost/planlos-docs:latest
+  #   build: ./planlos-docs
+  #   restart: unless-stopped
+  #   ports:
+  #     - "127.0.0.1:${DOCS_PORT:-8001}:80"
 
 volumes:
   db-data:
