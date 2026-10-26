@@ -37,6 +37,11 @@ bis auf einige absichtliche Konflikte zum Ausprobieren (im Kopf der Datei
 beschrieben). Bricht ab, wenn schon
 Daten vorhanden sind. Mit Podman: `./testdata.sh podman-compose`.
 
+Sichtbar sind die Daten nur mit Anmeldung: Der Server beantwortet nur Anfragen,
+deren `Remote_user` (Shibboleth) in `authorized_user` steht, sonst Fehler 403.
+Zum lokalen Testen ohne Shibboleth `NO_AUTH=1` in `.env` setzen und den Server
+neu erstellen (`docker compose up -d server`). Nie auf einem erreichbaren Server.
+
 ## Gesamter Stack mit Docker Compose
 
 Baut db, server und web aus den geklonten Repos. docs ist optional und

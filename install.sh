@@ -74,7 +74,7 @@ set_yaml() {
 }
 
 main() {
-  local dir="${PLANLOS_DIR:-$PWD/planlos}" docs=n testdata=n v rc=0
+  local dir="${PLANLOS_DIR:-$PWD/planlos}" docs=n testdata=n noauth=n v rc=0
   printf '\n%sPlanLos%s %s– Installation nach %s%s\n' "$B" "$N" "$D" "$dir" "$N"
 
   step 1 "Voraussetzungen prüfen"
@@ -109,6 +109,7 @@ main() {
   if [[ -f .env ]]; then
     ok "vorhanden, übersprungen (.env löschen, um neu zu fragen)"
     grep -q '^COMPOSE_PROFILES=docs' .env && docs=j
+    grep -q '^NO_AUTH=.' .env && noauth=j
   else
     printf '  %sLeer lassen blendet die Zeile aus.%s\n' "$D" "$N"
     ask v "Link zur Hilfe/Dokumentation"
@@ -138,10 +139,14 @@ EOF
 
     printf '\n'
     confirm "PlanLos mit Testdaten füllen? (erfundene Kurse, Räume, Dozierende)" n && testdata=j
+    # The server only answers requests with a Remote_user (Shibboleth) listed in authorized_user
+    printf '  %sOhne Shibboleth davor bekommt sonst niemand Daten zu sehen (Fehler 403).%s\n' "$D" "$N"
+    confirm "Anmeldung abschalten? (nur zum lokalen Testen)" n && noauth=j
 
     sed "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=$(od -An -N24 -tx1 /dev/urandom | tr -d ' \n')/" \
       .env.example >.env.tmp
     [[ $docs == j ]] && echo "COMPOSE_PROFILES=docs" >>.env.tmp
+    [[ $noauth == j ]] && sed -i 's/^NO_AUTH=.*/NO_AUTH=1/' .env.tmp
     mv .env.tmp .env
     ok ".env mit zufälligem Datenbank-Passwort angelegt"
   fi
@@ -159,6 +164,11 @@ EOF
   printf '  Web     http://localhost:%s\n' "$(sed -n 's/^WEB_PORT=//p' .env)"
   [[ $docs == j ]] && printf '  Docs    http://127.0.0.1:%s\n' "$(sed -n 's/^DOCS_PORT=//p' .env)"
   printf '  Ordner  %s\n' "$dir"
+  if [[ $noauth == j ]]; then
+    warn "Anmeldung abgeschaltet (NO_AUTH in .env): jeder mit Zugriff auf die Ports kann alles ändern"
+  else
+    printf '  %sZugriff nur über Shibboleth (Remote_user) mit Eintrag in authorized_user%s\n' "$D" "$N"
+  fi
   printf '  %sÄnderbar: .env, planlos-web/settings.yml (Seite neu laden genügt)%s\n' "$D" "$N"
   [[ $docs == j ]] &&
     printf '  %sImpressum der Doku: planlos-docs/settings.yml, danach neu bauen:%s\n    %s --profile docs up -d --build docs\n' \
