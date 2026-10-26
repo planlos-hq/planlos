@@ -16,7 +16,7 @@ Jedes Repo bleibt hier deshalb ein einfacher Klon.
 ## Gesamter Stack mit Docker Compose
 
 Baut db, server und web aus den geklonten Repos. docs ist optional: dafür
-`planlos-docs` in `repos.sh` und den `docs`-Dienst in `compose.yml` einkommentieren.
+den `docs`-Dienst in `compose.yml` einkommentieren.
 
 ```bash
 cp .env.example .env

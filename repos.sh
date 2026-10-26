@@ -4,7 +4,4 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ORG="git@github.com:planlos-hq"
 # Fallback for clone.sh when SSH fails (e.g. no key set up)
 ORG_HTTPS="https://github.com/planlos-hq"
-REPOS=(
-  planlos-db planlos-server planlos-web planlos-openapi
-  # planlos-docs # optional, uncomment (and the docs service in compose.yml) to include
-)
+REPOS=(planlos-db planlos-server planlos-web planlos-openapi planlos-docs)

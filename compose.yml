@@ -49,7 +49,7 @@ services:
     volumes:
       - ./planlos-web/settings.yml:/usr/share/nginx/html/settings.yml:ro
 
-  # Optional, uncomment (and planlos-docs in repos.sh) to include
+  # Optional, uncomment to include
   # docs:
   #   image: localhost/planlos-docs:latest
   #   build: ./planlos-docs
