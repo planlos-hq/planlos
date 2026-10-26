@@ -8,6 +8,9 @@ for repo in "${REPOS[@]}"; do
   if [[ -d "$ROOT/$repo" ]]; then
     echo "== $repo: already there"
   else
-    git clone "$ORG/$repo.git" "$ROOT/$repo"
+    git clone "$ORG/$repo.git" "$ROOT/$repo" || {
+      echo "== $repo: SSH failed, trying HTTPS"
+      git clone "$ORG_HTTPS/$repo.git" "$ROOT/$repo"
+    }
   fi
 done
