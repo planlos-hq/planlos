@@ -13,10 +13,25 @@ Jedes Repo bleibt hier deshalb ein einfacher Klon.
 ./push.sh                # aktuellen Branch jedes Repos pushen
 ```
 
+## Installation auf einem Server
+
+Klont alles nach `./planlos` (anderer Ordner per `PLANLOS_DIR`), fragt die Links
+für Hilfe und Impressum sowie optional das Impressum der Dokumentation ab, legt
+`.env` mit zufälligem Datenbank-Passwort an und startet den Stack. Bei erneutem
+Aufruf bleiben `.env` und Einstellungen erhalten.
+
+Später ändern: Hilfe- und Impressum-Link in `planlos-web/settings.yml` (Seite neu
+laden genügt), das Impressum der Dokumentation in `planlos-docs/settings.yml`
+(wird beim Bauen eingebaut, danach `docker compose --profile docs up -d --build docs`).
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/planlos-hq/planlos/main/install.sh | bash
+```
+
 ## Gesamter Stack mit Docker Compose
 
-Baut db, server und web aus den geklonten Repos. docs ist optional: dafür
-den `docs`-Dienst in `compose.yml` einkommentieren.
+Baut db, server und web aus den geklonten Repos. docs ist optional und
+startet nur mit `docker compose --profile docs up -d --build`.
 
 ```bash
 cp .env.example .env
