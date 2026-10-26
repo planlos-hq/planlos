@@ -16,7 +16,7 @@ Jedes Repo bleibt hier deshalb ein einfacher Klon.
 ## Installation auf einem Server
 
 Klont alles nach `./planlos` (anderer Ordner per `PLANLOS_DIR`), fragt die Links
-für Hilfe und Impressum sowie optional das Impressum der Dokumentation ab, legt
+für Hilfe und Impressum, optional das Impressum der Dokumentation und Testdaten ab, legt
 `.env` mit zufälligem Datenbank-Passwort an und startet den Stack. Bei erneutem
 Aufruf bleiben `.env` und Einstellungen erhalten.
 
@@ -27,6 +27,15 @@ laden genügt), das Impressum der Dokumentation in `planlos-docs/settings.yml`
 ```bash
 curl -fsSL https://raw.githubusercontent.com/planlos-hq/planlos/main/install.sh | bash
 ```
+
+## Testdaten
+
+`./testdata.sh` füllt die Datenbank des laufenden Stacks mit erfundenen Daten
+([`testdata.sql`](testdata.sql)): 6 Studiengänge mit je 3 Jahrgängen, 91 Kurse
+mit 183 Terminen, 36 Dozierende und 20 Räume. Der Plan ist überschneidungsfrei
+bis auf einige absichtliche Konflikte zum Ausprobieren (im Kopf der Datei
+beschrieben). Bricht ab, wenn schon
+Daten vorhanden sind. Mit Podman: `./testdata.sh podman-compose`.
 
 ## Gesamter Stack mit Docker Compose
 

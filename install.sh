@@ -74,7 +74,7 @@ set_yaml() {
 }
 
 main() {
-  local dir="${PLANLOS_DIR:-$PWD/planlos}" docs=n v rc=0
+  local dir="${PLANLOS_DIR:-$PWD/planlos}" docs=n testdata=n v rc=0
   printf '\n%sPlanLos%s %s– Installation nach %s%s\n' "$B" "$N" "$D" "$dir" "$N"
 
   step 1 "Voraussetzungen prüfen"
@@ -136,6 +136,9 @@ datenschutz_url|Link zur Datenschutzerklärung
 EOF
     fi
 
+    printf '\n'
+    confirm "PlanLos mit Testdaten füllen? (erfundene Kurse, Räume, Dozierende)" n && testdata=j
+
     sed "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=$(od -An -N24 -tx1 /dev/urandom | tr -d ' \n')/" \
       .env.example >.env.tmp
     [[ $docs == j ]] && echo "COMPOSE_PROFILES=docs" >>.env.tmp
@@ -147,6 +150,10 @@ EOF
   local profile=()
   [[ $docs == j ]] && profile=(--profile docs)
   "${COMPOSE[@]}" "${profile[@]}" up -d --build
+  if [[ $testdata == j ]]; then
+    ./testdata.sh "${COMPOSE[@]}" >/dev/null && ok "Testdaten eingefügt" ||
+      warn "Testdaten nicht eingefügt, später mit ./testdata.sh ${COMPOSE[*]}"
+  fi
 
   printf '\n%s✔ PlanLos läuft%s\n' "$G$B" "$N"
   printf '  Web     http://localhost:%s\n' "$(sed -n 's/^WEB_PORT=//p' .env)"
