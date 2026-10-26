@@ -3,7 +3,7 @@
 Skripte, um mit allen PlanLos-Repos gleichzeitig zu arbeiten. `clone.sh` klont
 die Repos in diesen Ordner (`./planlos-*`, per `.gitignore` ausgeschlossen).
 
-Bewusst ohne Git-Submodule: Diese verursachen im mehr Probleme, als sie lösen.
+Bewusst ohne Git-Submodule: Diese verursachen mehr Probleme, als sie lösen.
 Jedes Repo bleibt hier deshalb ein einfacher Klon.
 
 ```bash
