@@ -1,0 +1,5 @@
+.env
+# Cloned repos (own git history, see clone.sh)
+/planlos-*/
+# Nix / direnv
+.direnv
