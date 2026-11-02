@@ -41,7 +41,7 @@
               (map (
                 name:
                 pkgs.writeShellScriptBin "planlos-${name}" ''
-                  exec "$PLANLOS_ROOT/${name}.sh" "$@"
+                  exec ${pkgs.bash}/bin/bash "$PLANLOS_ROOT/${name}.sh" "$@"
                 ''
               ) scripts)
               ++ (with pkgs; [
