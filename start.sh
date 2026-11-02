@@ -12,6 +12,6 @@ if [[ ! -f .env ]]; then
 fi
 
 echo "== down"
-"${compose[@]}" down
+"${compose[@]}" down || echo "!! down reported errors (nothing running?)"
 echo "== up --build -d"
-"${compose[@]}" up --build -djk
+"${compose[@]}" up --build -d

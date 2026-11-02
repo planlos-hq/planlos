@@ -4,5 +4,5 @@ cd "$(dirname "$0")"
 compose=("$@")
 [[ ${#compose[@]} -gt 0 ]] || compose=(docker compose)
 
-"${compose[@]}" down
+"${compose[@]}" down || echo "!! down reported errors (nothing running?)"
 echo "== stopped"
