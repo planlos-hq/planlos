@@ -29,6 +29,7 @@
         "push"
         "commit"
         "testdata"
+        "clear"
       ];
     in
     {
@@ -48,7 +49,7 @@
                 git
                 shellcheck
                 # planlos-server
-                go_1_25 # keep in sync with planlos-server/go.mod
+                go # must satisfy the `go` directive in planlos-server/go.mod
                 gotools
                 golangci-lint
                 # planlos-db
