@@ -3,3 +3,5 @@
 /planlos-*/
 # Nix / direnv
 .direnv
+# go
+.bin/

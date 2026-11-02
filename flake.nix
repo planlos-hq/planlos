@@ -21,52 +21,43 @@
             pkgs = import inputs.nixpkgs { inherit system; };
           }
         );
-
-      # ./<name>.sh in the checkout, exposed as planlos-<name>
-      scripts = [
-        "clone"
-        "pull"
-        "push"
-        "commit"
-        "testdata"
-        "clear"
-        "start"
-        "stop"
-      ];
     in
     {
       devShells = forEachSupportedSystem (
         { pkgs }:
         {
           default = pkgs.mkShellNoCC {
-            packages =
-              (map (
-                name:
-                pkgs.writeShellScriptBin "planlos-${name}" ''
-                  exec ${pkgs.bash}/bin/bash "$PLANLOS_ROOT/${name}.sh" "$@"
-                ''
-              ) scripts)
-              ++ (with pkgs; [
-                # planlos (these scripts)
-                git
-                shellcheck
-                # planlos-server
-                go # must satisfy the `go` directive in planlos-server/go.mod
-                gotools
-                golangci-lint
-                # planlos-db
-                pgformatter
-                postgresql
-                # planlos-web
-                nodejs_22
-                nixfmt
-                # planlos-openapi
-                jdk_headless
-                uv
-                # planlos-docs
-                zensical
-                (python3.withPackages (ps: [ ps.pyyaml ]))
-              ]);
+            packages = [
+              # planlos CLI: build from the checkout, then run
+              (pkgs.writeShellScriptBin "planlos" ''
+                set -e
+                ${pkgs.go}/bin/go build -C "$PLANLOS_ROOT" -o "$PLANLOS_ROOT/.bin/planlos" .
+                exec "$PLANLOS_ROOT/.bin/planlos" "$@"
+              '')
+            ]
+            ++ (with pkgs; [
+              # planlos (these scripts)
+              git
+              shellcheck
+              gcc
+              cobra-cli
+              # planlos-server
+              go # must satisfy the `go` directive in planlos-server/go.mod
+              gotools
+              golangci-lint
+              # planlos-db
+              pgformatter
+              postgresql
+              # planlos-web
+              nodejs_22
+              nixfmt
+              # planlos-openapi
+              jdk_headless
+              uv
+              # planlos-docs
+              zensical
+              (python3.withPackages (ps: [ ps.pyyaml ]))
+            ]);
 
             shellHook = ''
               export PLANLOS_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
