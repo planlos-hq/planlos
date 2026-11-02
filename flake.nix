@@ -30,6 +30,8 @@
         "commit"
         "testdata"
         "clear"
+        "start"
+        "stop"
       ];
     in
     {
