@@ -15,7 +15,7 @@ SSH und bei Fehlschlag per HTTPS.
 ./clear.sh               # alle geklonten Repos löschen (Bestätigung mit yes/ja)
 ```
 
-## Dev-CLI `planlos`
+## Dev-CLI planlos
 
 In der Nix-Shell (`nix develop` bzw. direnv) steht zusätzlich die Go-CLI
 `planlos` bereit. Sie bündelt dieselben Skripte als Befehle:
