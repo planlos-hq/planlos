@@ -27,7 +27,7 @@ services:
       DATABASE_URL: postgres://planlos:${POSTGRES_PASSWORD}@db:5432/planlos?sslmode=disable
       NO_AUTH: ${NO_AUTH:-}
     ports:
-      - "${SERVER_PORT:-8004}:8004"
+      - "127.0.0.1:${SERVER_PORT:-8004}:8004"
     volumes:
       - backups:/root/backups
 
